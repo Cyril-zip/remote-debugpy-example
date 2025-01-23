@@ -1,12 +1,12 @@
 # Use a smaller base image
-FROM python:3.9.1-slim
+FROM python:3.11.11-bullseye
 
 # Set work directory
 WORKDIR /usr/src/app
 
 # Set environment variables
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
 
 # Install system dependencies
 RUN apt-get update && \
@@ -16,8 +16,16 @@ RUN apt-get update && \
 # Copy and install Python dependencies
 COPY requirements.txt /usr/src/app/
 RUN pip install --upgrade pip setuptools wheel && \
+    pip install --upgrade debugpy && \
     pip install --no-cache-dir -r requirements.txt && \
     rm -rf /root/.cache/pip
 
 # Copy project files
 COPY . /usr/src/app/
+
+COPY ./app /usr/src/app/
+COPY ./main.py /usr/src/app/
+
+EXPOSE 5000
+
+CMD [ "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "5000", "--workers", "1" ]

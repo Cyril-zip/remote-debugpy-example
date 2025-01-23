@@ -1,0 +1,38 @@
+# kubernetes-fastapi Deployment
+# Defines the deployment of the app running in a pod on any worker node
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: example
+  name: fast-api-deployment
+spec:
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 2
+      maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: fast-api
+  template:
+    metadata:
+      labels:
+        app: fast-api
+    spec:
+      containers:
+      - name: fast-api
+        image: chanpaul1234572/fast-api-example:v2.0
+        env:
+        - name: DATABASE_URL
+          value: "postgresql://hello_fastapi:hello_fastapi@10.96.244.52/hello_fastapi_dev"
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "500m"
+          limits:
+            memory: "1G"
+            cpu: "1"
+        imagePullPolicy: "IfNotPresent"
+        ports:
+        - containerPort: 5000

@@ -13,14 +13,14 @@ def test_create_note(test_app, monkeypatch):
         "request": {
             "title": "something",
             "description": "something else",
-            "completed": "False",
+            "completed": False,
             "created_date": get_current_datetime()
         },
         "response": {
             "id": 1,
             "title": "something",
             "description": "something else",
-            "completed": "False",
+            "completed": False,
             "created_date": get_current_datetime()
         }
     }
@@ -44,7 +44,7 @@ def test_create_note(test_app, monkeypatch):
     [
         [1, {}, 422],
         [1, {"description": "bar"}, 422],
-        [999, {"title": "foo", "description": "bar", "created_date": get_current_datetime(), "completed": "True"}, 201],
+        [999, {"title": "foo", "description": "bar", "created_date": get_current_datetime(), "completed": True}, 201],
         [1, {"title": "1", "description": "bar"}, 422],
         [1, {"title": "foo", "description": "1"}, 422]
     ]
@@ -61,7 +61,7 @@ def test_create_note_invalid(test_app, monkeypatch, test_id, test_payload, expec
 
 # These tests should be run in order
 def test_read_note(test_app, monkeypatch):
-    test_data = {"title": "something", "description": "something else", "id": 1, "completed": "False",
+    test_data = {"title": "something", "description": "something else", "id": 1, "completed": False,
                  "created_date": dt.now().strftime("%Y-%m-%d %H:%M")}
 
     async def mock_get(id):
@@ -89,9 +89,9 @@ def test_read_note_incorrect_id(test_app, monkeypatch):
 
 
 def read_all_notes(test_app, monkeypatch):
-    test_data = [{"title": "something", "description": "something else", "id": 1, "completed": "False",
+    test_data = [{"title": "something", "description": "something else", "id": 1, "completed": False,
                   "created_date": dt.now().strftime("%Y-%m-%d %H:%M")},
-                 {"title": "something", "description": "something else", "id": 2, "completed": "False",
+                 {"title": "something", "description": "something else", "id": 2, "completed": False,
                   "created_date": dt.now().strftime("%Y-%m-%d %H:%M")}]
 
     async def mock_get_all():
@@ -110,7 +110,7 @@ def read_all_notes(test_app, monkeypatch):
         [1, {}, 422],
         [1, {"description": "bar"}, 422],
         [999, {"title": "foo", "description": "bar", "created_date": dt.now().strftime("%Y-%m-%d %H:%M"),
-               "completed": "True"}, 404],
+               "completed": True}, 404],
         [1, {"title": "1", "description": "bar"}, 422],
         [1, {"title": "foo", "description": "1"}, 422],
         [0, {"title": "foo", "description": "bar"}, 422],
@@ -128,7 +128,7 @@ def test_update_note_invalid(test_app, monkeypatch, id, payload, status_code):
 
 # Test for DELETE route
 def test_remove_note_200(test_app, monkeypatch):
-    test_data = {"title": "something", "description": "something else", "id": 1, "completed": "False",
+    test_data = {"title": "something", "description": "something else", "id": 1, "completed": False,
                  "created_date": dt.now().strftime("%Y-%m-%d %H:%M")}
 
     async def mock_get(id):
@@ -165,7 +165,7 @@ def test_remove_note_invalid_id(test_app, monkeypatch):
 
 
 def test_read_note_by_title(test_app, monkeypatch):
-    test_data = [{"title": "something", "description": "something else", "id": 1, "completed": "False",
+    test_data = [{"title": "something", "description": "something else", "id": 1, "completed": False,
                   "created_date": dt.now().strftime("%Y-%m-%d %H:%M")}]
 
     async def mock_get_by_title(title):
@@ -179,9 +179,9 @@ def test_read_note_by_title(test_app, monkeypatch):
 
 
 def test_read_all_completed_notes(test_app, monkeypatch):
-    test_data = [{"title": "something", "description": "something else", "id": 1, "completed": "True",
+    test_data = [{"title": "something", "description": "something else", "id": 1, "completed": True,
                   "created_date": dt.now().strftime("%Y-%m-%d %H:%M")},
-                 {"title": "something", "description": "something else", "id": 2, "completed": "True",
+                 {"title": "something", "description": "something else", "id": 2, "completed": True,
                   "created_date": dt.now().strftime("%Y-%m-%d %H:%M")}]
 
     async def mock_get_completed():
@@ -196,9 +196,9 @@ def test_read_all_completed_notes(test_app, monkeypatch):
 
 
 def test_read_all_not_completed_notes(test_app, monkeypatch):
-    test_data = [{"title": "Test", "description": "something else", "id": 1, "completed": "False",
+    test_data = [{"title": "Test", "description": "something else", "id": 1, "completed": False,
                   "created_date": dt.now().strftime("%Y-%m-%d %H:%M")},
-                 {"title": "something", "description": "something else", "id": 2, "completed": "False",
+                 {"title": "something", "description": "something else", "id": 2, "completed": False,
                   "created_date": dt.now().strftime("%Y-%m-%d %H:%M")}]
 
     async def mock_get_not_completed():
@@ -212,7 +212,7 @@ def test_read_all_not_completed_notes(test_app, monkeypatch):
 
 
 def test_read_note_by_description(test_app, monkeypatch):
-    test_data = [{"title": "something", "description": "something else", "id": 1, "completed": "False",
+    test_data = [{"title": "something", "description": "something else", "id": 1, "completed": False,
                   "created_date": dt.now().strftime("%Y-%m-%d %H:%M")}]
 
     async def mock_get_by_description(description):
@@ -226,7 +226,7 @@ def test_read_note_by_description(test_app, monkeypatch):
 
 
 def test_read_note_by_date(test_app, monkeypatch):
-    test_data = [{"title": "something", "description": "something else", "id": 1, "completed": "False",
+    test_data = [{"title": "something", "description": "something else", "id": 1, "completed": False,
                   "created_date": dt.now().strftime("%Y-%m-%d %H:%M")}]
 
     async def mock_get_by_date(created_date):
@@ -240,7 +240,7 @@ def test_read_note_by_date(test_app, monkeypatch):
 
 
 def test_read_note_by_date_invalid(test_app, monkeypatch):
-    test_data = [{"title": "something", "description": "something else", "id": 1, "completed": "False",
+    test_data = [{"title": "something", "description": "something else", "id": 1, "completed": False,
                   "created_date": dt.now().strftime("%Y-%m-%d %H:%M")}]
 
     async def mock_get_by_date(created_date):

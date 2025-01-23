@@ -21,10 +21,37 @@ async def create_note(payload: NoteSchema):
     }
     return response_object
 
+@router.get("/{id}/title", response_model=str)
+async def read_note(id: int = Path(..., gt=0), ):
+    note = None
+    try:
+        note = await crud.get(id)
+        return note.title # Set breakpoint and step over the code, when note id cannot be found, the function returns None and note.title will be failed
+    except Exception as e:
+        raise HTTPException(
+            status_code=500, detail="Internal Server Error, please check with the support")
 
 @router.get("/{id}/", response_model=NoteDB)
 async def read_note(id: int = Path(..., gt=0), ):
-    note = await crud.get(id)
+    note = None
+    try:
+        note = await crud.getWithSession(id)
+    except Exception as e:
+        raise HTTPException(
+            status_code=500, detail="Internal Server Error, please check with the support")
+    if not note:
+        raise HTTPException(status_code=404, detail="Note not found")
+    return note
+
+
+@router.get("/{id}/bug", response_model=NoteDB)
+async def read_note(id: int = Path(..., gt=0), ):
+    note = None
+    try:
+        note = await crud.getWithSessionBugVersion(id)
+    except Exception as e:
+        raise HTTPException(
+            status_code=500, detail="Internal Server Error, please check with the support")
     if not note:
         raise HTTPException(status_code=404, detail="Note not found")
     return note
@@ -36,7 +63,8 @@ async def read_all_notes():
 
 
 @router.put("/{id}/", response_model=NoteDB)
-async def update_note(payload: NoteSchema, id: int = Path(..., gt=0)):  # Ensures the input is greater than 0
+# Ensures the input is greater than 0
+async def update_note(payload: NoteSchema, id: int = Path(..., gt=0)):
     note = await crud.get(id)
     if not note:
         raise HTTPException(status_code=404, detail="Note not found")
@@ -84,5 +112,3 @@ async def read_note_by_description(description: str):
 @router.get("/date/{created_date}/", response_model=List[NoteDB])
 async def read_note_by_date(created_date: str):
     return await crud.get_by_date(created_date)
-
-

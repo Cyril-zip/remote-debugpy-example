@@ -1,0 +1,15 @@
+# kubernetes-fastapi clusterIP Service
+# Enables the pods in a deployment to be accessible from outside the cluster
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: example
+  name: fast-api-svc
+spec:
+  selector:
+    app: fast-api
+  ports:
+    - protocol: "TCP"
+      port: 5000
+      targetPort: 5000
+  type: ClusterIP

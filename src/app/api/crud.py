@@ -1,6 +1,8 @@
 from app.api.models import NoteSchema
-from app.db import notes, database
+from app.db import notes, database, SessionLocal, engine
 from datetime import datetime as dt
+from sqlalchemy import create_engine, text
+from sqlalchemy.exc import OperationalError
 
 
 async def post(payload: NoteSchema):
@@ -15,6 +17,30 @@ async def get(id: int):
     query = notes.select().where(id == notes.c.id)
     return await database.fetch_one(query=query)
 
+# WithConnectionExhaustion
+
+
+async def getWithSessionBugVersion(id: int):
+    # Simulate a missing session close to exhaust the connection pool
+    session = SessionLocal()
+    try:
+        # add logpoint here to monitor the no of connection and observe the remaining connection
+        result = session.execute(
+            text("SELECT * FROM notes WHERE id = :id"), {"id": id}).fetchone()
+        return result
+    finally:
+        pass
+        # session.close()
+
+
+async def getWithSession(id: int):
+    # Simulate a missing session close to exhaust the connection pool
+    session = SessionLocal()
+    with SessionLocal() as session:
+        result = session.execute(
+            text("SELECT * FROM notes WHERE id = :id"), {"id": id}).fetchone()
+        return result
+
 
 async def get_all():
     query = notes.select()
@@ -25,7 +51,8 @@ async def put(id: int, payload=NoteSchema):
     created_date = dt.now().strftime("%Y-%m-%d %H:%M")
     query = (
         notes.update().where(id == notes.c.id).values(title=payload.title,
-                                                      description=payload.description, completed=payload.completed,
+                                                      description=payload.description,
+                                                      completed=payload.completed,
                                                       created_date=created_date)
         .returning(notes.c.id)
     )
