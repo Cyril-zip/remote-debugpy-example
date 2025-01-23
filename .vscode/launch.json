@@ -1,0 +1,79 @@
+{
+    "configurations": [
+        {
+            "name": "Python Debugger: FastAPI",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "uvicorn",
+            "args": [
+                "app.main:app",
+                "--reload",
+                "--workers",
+                "1",
+                "--host",
+                "0.0.0.0",
+                "--port",
+                "8001"
+            ],
+            // "jinja": true
+            "cwd": "${workspaceFolder}/src",
+            "justMyCode": false
+        },
+        {
+            "name": "Python: Remote attach to fast api local",
+            "type": "debugpy",
+            "request": "attach",
+            "connect": {
+                "host": "127.0.0.1",
+                "port": 5678
+            },
+            "pathMappings": [
+                {
+                    "localRoot": "${workspaceFolder}",
+                    "remoteRoot": "${workspaceFolder}"
+                },
+            ],
+            "justMyCode": false
+        },
+        {
+            "name": "Python: Remote attach to fast api",
+            "type": "debugpy",
+            "request": "attach",
+            "connect": {
+                "host": "127.0.0.1",
+                "port": 5678
+            },
+            "pathMappings": [
+                {
+                    "localRoot": "${workspaceFolder}/src",
+                    "remoteRoot": "/usr/src/app"
+                },
+                {
+                    "localRoot": "${workspaceFolder}/venv/lib/python3.11/site-packages",
+                    "remoteRoot": "/usr/local/lib/python3.11/site-packages"
+                }
+            ],
+            "justMyCode": false
+        },
+        {
+            "name": "Python: Remote attach to fast api 2",
+            "type": "debugpy",
+            "request": "attach",
+            "connect": {
+                "host": "127.0.0.1",
+                "port": 5679
+            },
+            "pathMappings": [
+                {
+                    "localRoot": "${workspaceFolder}/src",
+                    "remoteRoot": "/usr/src/app"
+                },
+                {
+                    "localRoot": "${workspaceFolder}/venv/lib/python3.11/site-packages",
+                    "remoteRoot": "/usr/local/lib/python3.11/site-packages"
+                }
+            ],
+            "justMyCode": false
+        },
+    ]
+}
