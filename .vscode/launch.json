@@ -32,7 +32,7 @@
                     "remoteRoot": "${workspaceFolder}"
                 },
             ],
-            "justMyCode": true
+            "justMyCode": true,
         },
         {
             "name": "Python: Remote attaches to FastAPI Pod 1",
@@ -55,7 +55,7 @@
             "justMyCode": true
         },
         {
-            "name": "Python: Remote attaches to FastAPI Pod 1",
+            "name": "Python: Remote attaches to FastAPI Pod 2",
             "type": "debugpy",
             "request": "attach",
             "connect": {
@@ -72,7 +72,7 @@
                     "remoteRoot": "/usr/local/lib/python3.11/site-packages"
                 }
             ],
-            "justMyCode": true
+            "justMyCode": false
         },
     ]
 }

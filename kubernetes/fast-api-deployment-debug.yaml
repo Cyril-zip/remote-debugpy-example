@@ -1,16 +1,8 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  annotations:
-    deployment.kubernetes.io/revision: "17"
-    kubectl.kubernetes.io/last-applied-configuration: |
-      {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"name":"fast-api-deployment","namespace":"example"},"spec":{"replicas":2,"selector":{"matchLabels":{"app":"fast-api"}},"strategy":{"rollingUpdate":{"maxSurge":2,"maxUnavailable":1},"type":"RollingUpdate"},"template":{"metadata":{"labels":{"app":"fast-api"}},"spec":{"containers":[{"env":[{"name":"DATABASE_URL","value":"postgresql://hello_fastapi:hello_fastapi@10.96.244.52/hello_fastapi_dev"}],"image":"testing/fast-api-example:v2.0","imagePullPolicy":"Never","name":"fast-api","ports":[{"containerPort":5000}],"resources":{"limits":{"cpu":"1","memory":"1G"},"requests":{"cpu":"500m","memory":"256Mi"}}}]}}}}
-  creationTimestamp: "2025-01-13T11:17:37Z"
-  generation: 17
   name: fast-api-deployment
   namespace: example
-  resourceVersion: "163449"
-  uid: 46f6913a-2b81-4989-9552-b5185db8bec7
 spec:
   progressDeadlineSeconds: 600
   replicas: 2
@@ -24,54 +16,50 @@ spec:
       maxUnavailable: 1
     type: RollingUpdate
   template:
-    metadata:
-      annotations:
-        kubectl.kubernetes.io/restartedAt: "2025-01-23T07:04:36+08:00"
-      creationTimestamp: null
-      labels:
-        app: fast-api
+    labels:
+      app: fast-api
     spec:
       containers:
-      - args:
-        - -m
-        - debugpy
-        - --listen
-        - localhost:5678
-        - -m
-        - uvicorn
-        - app.main:app
-        - --host
-        - 0.0.0.0
-        - --port
-        - "5000"
-        - --workers
-        - "1"
-        command:
-        - python3
-        env:
-        - name: DATABASE_URL
-          value: postgresql://hello_fastapi:hello_fastapi@postgres.example.svc/hello_fastapi_dev
-        image: testing/fast-api-example:v2.5
-        imagePullPolicy: Never
-        name: fast-api
-        ports:
-        - containerPort: 5000
-          protocol: TCP
-        livenessProbe:
-          httpGet:
-            path: /ping
-            port: 5000
-          initialDelaySeconds: 5
-          periodSeconds: 10
-        resources:
-          limits:
-            cpu: "1"
-            memory: 1G
-          requests:
-            cpu: 500m
-            memory: 256Mi
-        terminationMessagePath: /dev/termination-log
-        terminationMessagePolicy: File
+        - args:
+            - -m
+            - debugpy
+            - --listen
+            - localhost:5678
+            - -m
+            - uvicorn
+            - app.main:app
+            - --host
+            - 0.0.0.0
+            - --port
+            - "5000"
+            - --workers
+            - "1"
+          command:
+            - python3
+          env:
+            - name: DATABASE_URL
+              value: postgresql://hello_fastapi:hello_fastapi@postgres.example.svc/hello_fastapi_dev
+          image: testing/fast-api-example:v2.5
+          imagePullPolicy: Never
+          name: fast-api
+          ports:
+            - containerPort: 5000
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /ping
+              port: 5000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          resources:
+            limits:
+              cpu: "1"
+              memory: 1G
+            requests:
+              cpu: 500m
+              memory: 256Mi
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler

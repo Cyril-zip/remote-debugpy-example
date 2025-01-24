@@ -13,4 +13,5 @@ async def pong():
 async def debug():
     import debugpy
     debugpy.listen(("127.0.0.1", 5678))
+    debugpy.wait_for_client()
     return {"debug": "started"}
