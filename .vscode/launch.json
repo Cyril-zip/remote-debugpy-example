@@ -1,7 +1,7 @@
 {
     "configurations": [
         {
-            "name": "Python Debugger: FastAPI",
+            "name": "Python: Local start FastAPI",
             "type": "debugpy",
             "request": "launch",
             "module": "uvicorn",
@@ -15,12 +15,11 @@
                 "--port",
                 "8001"
             ],
-            // "jinja": true
             "cwd": "${workspaceFolder}/src",
-            "justMyCode": false
+            "justMyCode": true
         },
         {
-            "name": "Python: Remote attach to fast api local",
+            "name": "Python: Remote attaches to Loacl FastAPI",
             "type": "debugpy",
             "request": "attach",
             "connect": {
@@ -33,10 +32,10 @@
                     "remoteRoot": "${workspaceFolder}"
                 },
             ],
-            "justMyCode": false
+            "justMyCode": true
         },
         {
-            "name": "Python: Remote attach to fast api",
+            "name": "Python: Remote attaches to FastAPI Pod 1",
             "type": "debugpy",
             "request": "attach",
             "connect": {
@@ -53,10 +52,10 @@
                     "remoteRoot": "/usr/local/lib/python3.11/site-packages"
                 }
             ],
-            "justMyCode": false
+            "justMyCode": true
         },
         {
-            "name": "Python: Remote attach to fast api 2",
+            "name": "Python: Remote attaches to FastAPI Pod 1",
             "type": "debugpy",
             "request": "attach",
             "connect": {
@@ -73,7 +72,7 @@
                     "remoteRoot": "/usr/local/lib/python3.11/site-packages"
                 }
             ],
-            "justMyCode": false
+            "justMyCode": true
         },
     ]
 }
