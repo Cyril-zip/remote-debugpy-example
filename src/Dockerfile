@@ -25,6 +25,7 @@ COPY . /usr/src/app/
 
 COPY ./app /usr/src/app/
 COPY ./main.py /usr/src/app/
+RUN mkdir /usr/src/app/debugpy_logs
 
 EXPOSE 5000
 

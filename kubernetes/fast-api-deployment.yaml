@@ -6,7 +6,7 @@ metadata:
   namespace: example
   name: fast-api-deployment
 spec:
-  replicas: 2
+  replicas: 1
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
         - name: fast-api
-          image: testing/fast-api-example:v2.9
+          image: testing/fast-api-example:v3.1
           env:
             - name: POSTGRES_URL
               value: "postgresql://<POSTGRES_USER>:<POSTGRES_PASSWORD>@<POSTGRES_HOST>/<POSTGRES_DB>"
@@ -43,13 +43,13 @@ spec:
                   key: POSTGRES_PASSWORD
             - name: POSTGRES_HOST
               value: "postgres.example.svc.cluster.local."
-          livenessProbe:
-            httpGet:
-              path: /ping
-              port: 5000
-            initialDelaySeconds: 5
-            failureThreshold: 10
-            periodSeconds: 10
+          # livenessProbe:
+          #   httpGet:
+          #     path: /ping
+          #     port: 5000
+          #   initialDelaySeconds: 5
+          #   failureThreshold: 10
+          #   periodSeconds: 10
           resources:
             requests:
               memory: "256Mi"
